@@ -1,0 +1,39 @@
+/* 
+.content_header {
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+
+.nav_center .navbar-nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+
+}
+.navbar-nav .nav-item {
+    padding: 55px 15px;
+}
+.nav-item .nav-link {
+    white-space: nowrap;
+}
+.header-icons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+} */
+
+
+.content_right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.content_right .fa-heart {
+    color: #777;
+}
+.content_right i {
+    padding: 8px;
+}
