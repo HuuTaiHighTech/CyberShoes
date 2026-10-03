@@ -185,3 +185,11 @@
   /* order: 0; */
 }
 }
+.card {
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+}
+/* sau khi hover */
+.card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}

@@ -3,6 +3,61 @@ import React, { useState } from 'react'
 const Layout = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const [cartItems, setCartItems] = useState([]);
+    const deleteItem = (id) => {
+      let cartUpdate = cartItems.filter((item) => item.id !== id);
+      setCartItems(cartUpdate);
+    }
+    const tangGiamSoLuong = (maSP, quality) => {
+        // copy mảng giỏ hàng
+        let cartUpdate = [...cartItems];
+        // Tìm sản phẩm cần cập nhật trong giỏ hàng
+        // hàm find duyệt từng phân tử để tìm theo điều kiện
+        let spTangGiam = cartUpdate.find((spCart) => spCart.id === maSP);
+        if(spTangGiam) {
+            spTangGiam.quantity += quality;
+            if(spTangGiam.quantity < 1) {
+                alert("số lượng không được dưới 1")
+                spTangGiam.quantity = 1;
+            }
+        }
+        setCartItems(cartUpdate);
+    }
+    const [detailProduct, setDetailProduct] = useState({
+        sizes: [32, 33, 34, 35],
+        id: 2,
+        name: "vans old school",
+        alias: "vans-old-school",
+        price: 200,
+
+        description:
+            "about this shoe:Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+
+        size: [32, 33, 34, 35],
+
+        shortDescription:
+            "about this shoe:Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+
+        quantity: 200,
+
+        deleted: false,
+
+        categories: [
+            {
+                id: "VANS_CONVERSE",
+                category: "VANS_CONVERSE"
+            }
+        ],
+
+        relatedProducts: [3, 2, 1],
+
+        feature: true,
+
+        image: "https://apistore.cybersoft.edu.vn/images/van-old-school.png",
+
+        imgLink: "https://apistore.cybersoft.edu.vn/images/van-old-school.png"
+    });
     const product = [{
         sizes: [32, 33, 34, 35],
         id: 2,
@@ -36,7 +91,58 @@ const Layout = () => {
         image: "https://apistore.cybersoft.edu.vn/images/van-old-school.png",
 
         imgLink: "https://apistore.cybersoft.edu.vn/images/van-old-school.png"
+    },
+    {
+        sizes: [32, 33, 34, 35],
+        id: 3,
+        name: "converse chuck taylor",
+        alias: "converse-chuck-taylor",
+        price: 250,
+        description:
+            "about this shoe:Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        size: [32, 33, 34, 35],
+        shortDescription:
+            "about this shoe:Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        quantity: 200,
+        deleted: false,
+
+        categories: [
+            {
+                id: "VANS_CONVERSE",
+                category: "VANS_CONVERSE"
+            }
+        ],
+
+        relatedProducts: [2, 3, 1],
+
+        feature: true,
+
+        image: "https://apistore.cybersoft.edu.vn/images/converse-chuck-taylor.png",
+
+        imgLink: "https://apistore.cybersoft.edu.vn/images/converse-chuck-taylor.png"
     }]
+    const addToCart = (spClick) => {
+        /**
+         * Hàm này được để thêm sản phẩm
+         * còn Tham số spClick là sản phẩm click mục đích so sánh với SP có trong giỏ hàng tồn tại chưa
+         * 
+         */
+        const spAdd = { ...spClick, quantity: 1 };
+        /**
+         * Khi click cần kiểm tra trong giỏ hàng -> xử lý 2 trường hợp
+         * 1. sản phẩm có trong giỏ hàng chưa
+         * 2. sản phẩm chưa có tỏng giỏ hàng
+         */
+        const sp = cartItems.find((item) => item.id === spAdd.id);
+        if (sp) {
+            sp.quantity += 1;
+            const newCartItems = [...cartItems];
+            setCartItems(newCartItems);
+        } else {
+            const newCartItems = [...cartItems, spAdd];
+            setCartItems(newCartItems);
+        }
+    };
     const openMenu = () => {
         setIsClosing(false);
         setIsMenuOpen(true);
@@ -446,7 +552,7 @@ const Layout = () => {
                                 <path d="M12 8C12 8 12 8 11.24 7C10.36 5.84 9.06 5 7.5 5C5.01 5 3 7.01 3 9.5C3 10.43 3.28 11.29 3.76 12C4.57 13.21 12 21 12 21M12 8C12 8 12 8 12.76 7C13.64 5.84 14.94 5 16.5 5C18.99 5 21 7.01 21 9.5C21 10.43 20.72 11.29 20.24 12C19.43 13.21 12 21 12 21" stroke="#1C1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
 
-                            <svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" onClick={() => setIsOpen(true)}>
                                 <path d="M8 12L8 8C8 5.79086 9.79086 4 12 4C14.2091 4 16 5.79086 16 8L16 12" stroke="#222222" stroke-width="2" strokeLinecap="round" />
                                 <path d="M3.69435 12.6678C3.83942 10.9269 3.91196 10.0565 4.48605 9.52824C5.06013 9 5.9336 9 7.68053 9H16.3195C18.0664 9 18.9399 9 19.514 9.52824C20.088 10.0565 20.1606 10.9269 20.3057 12.6678L20.8195 18.8339C20.904 19.8474 20.9462 20.3542 20.6491 20.6771C20.352 21 19.8435 21 18.8264 21H5.1736C4.15655 21 3.64802 21 3.35092 20.6771C3.05382 20.3542 3.09605 19.8474 3.18051 18.8339L3.69435 12.6678Z" stroke-width="2" stroke="#222222" />
                             </svg>
@@ -893,87 +999,136 @@ const Layout = () => {
                 <section className='product_list'>
                     <div className='container'>
                         {/* Sản phẩm */}
-                           <div className='row'>
-                         <div className="col-12 text-center">
+                        <div className='row'>
+                            <div className="col-12 text-center">
                                 <h2>Trang sản phẩm</h2>
                             </div>
-                            </div>
+                        </div>
                         <div className='row'>
-                         
-                        <div className='col-3'>
+
                             {(product.map((item) => (
-                                <div className="card" style={{ width: '18rem' }} key={item.id}>
-                                    <img src={item.image} className="card-img-top" alt="..." />
-                                    <div className="card-body">
-                                        <h5 className="card-title">{item.name}</h5>
-                                        <p className="card-text">{(item.price * 1000).toLocaleString('en-US')}₫</p>
-                                        <a href="#" className="btn btn-primary">Thêm vào giỏ hàng</a>
+                                <div className='col-3'>
+                                    <div className="card" key={item.id}>
+                                        <img src={item.image} className="card-img-top" alt="..."  onClick={()=> setDetailProduct(item)}/>
+                                        <div className="card-body">
+                                            <h5 className="card-title">{item.name}</h5>
+                                            <p className="card-text">{(item.price * 1000).toLocaleString('en-US')}₫</p>
+                                            <a href="#" className="btn btn-primary" onClick={() => addToCart(item)}>Thêm vào giỏ hàng</a>
+                                        </div>
                                     </div>
                                 </div>
                             )))
                             }
                         </div>
                     </div>
+                </section>
+                <section className='product_detail'>
+                    <div className='container'>
+                        <div className='row'>
+                            <div className='col-12 text-center'>
+                                <h2>Trang chi tiết sản phẩm</h2>
+                            </div>
+                            <div className='col-4'>
+                                <img src={detailProduct.image} className="card-img-top" alt="..." />
+                            </div>
+                            <div className='col-8'>
+                                <table className="table">
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">Tên sản phẩm</th>
+                                            <td>{detailProduct.name}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Mã sản phẩm</th>
+                                            <td>{detailProduct.alias}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Giá</th>
+                                            <td>{(detailProduct.price * 1000).toLocaleString('vi-VN')}₫</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Mô tả ngắn</th>
+                                            <td>{detailProduct.shortDescription}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Mô tả chi tiết</th>
+                                            <td>{detailProduct.description}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Kích cỡ</th>
+                                            <td>{detailProduct.sizes.join(', ')}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Số lượng</th>
+                                            <td>{detailProduct.quantity}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Danh mục</th>
+                                            <td>{detailProduct.categories.map((category) => category.category).join(', ')}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
                     </div>
                 </section>
-            <section className='product_detail'>
-                <div className='container'>
-                    <div className='row'>
-                        <div className='col-12 text-center'>
-                            <h2>Trang chi tiết sản phẩm</h2>
-                        </div>
-                        <div className='col-4'>
-                            <img src={product[0].image} className="card-img-top" alt="..." />
-                        </div>
-                        <div className='col-8'>
-                            <table className="table">
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">Tên sản phẩm</th>
-                                        <td>{product[0].name}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Mã sản phẩm</th>
-                                        <td>{product[0].alias}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Giá</th>
-                                        <td>{(product[0].price * 1000).toLocaleString('vi-VN')}₫</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Mô tả ngắn</th>
-                                        <td>{product[0].shortDescription}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Mô tả chi tiết</th>
-                                        <td>{product[0].description}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Kích cỡ</th>
-                                        <td>{product[0].sizes.join(', ')}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Số lượng</th>
-                                        <td>{product[0].quantity}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Danh mục</th>
-                                        <td>{product[0].categories.map((category) => category.category).join(', ')}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-                        </div>
+                <section className='product_cart'>
+                    <div className='container'>
+                        {isOpen && (<div
+                            className="modal show d-block"
+                            tabIndex={-1}
+                            role="dialog"
+                            aria-modal="true"
+                            style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+                            onClick={() => setIsOpen(false)}
+                        >
+                            <div className="modal-dialog" onClick={(event) => event.stopPropagation()}>
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h5 className="modal-title">Trang giỏ hàng</h5>
+                                        <button type="button" className="btn-close" aria-label="Close" onClick={() => setIsOpen(false)} />
+                                    </div>
+                                    <div className="modal-body">
+                                        {cartItems.map((item) => (
+                                            <div className='row' key={item.id}>
+                                                <div className='col-4'>
+                                                    <img src={item.image} alt={item.name} className='img-fluid' />
+                                                </div>
+                                                <div className='col-8'>
+                                                    <div className='d-flex align-items-center gap-3'>
+                                                        <h3>{item.name}</h3>
+                                                        <div className='btn_delete' style={{ color: "red", cursor: "pointer", padding: "10px" }} onClick={() => handleDelete(item.id)}>
+                                                            <i className="fa-solid fa-trash" onClick={()=>deleteItem(item.id)}/>
+                                                        </div>
+                                                    </div>
+                                                    <p>Giá: {(item.price * 1000).toLocaleString('vi-VN')}₫</p>
+                                                    <button className='btn btn-primary' onClick={()=>{
+                                                        tangGiamSoLuong(item.id, -1);
+                                                    }}>-</button>
+                                                    <span className='mx-2'>{item.quantity}</span>
+                                                    <button className='btn btn-primary' onClick={()=>{
+                                                        tangGiamSoLuong(item.id, 1);
+                                                    }}>+</button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                        <div className="modal-footer">
+                                            <p>Tổng tiền: {(cartItems.reduce((total, item) => total + (item.price * item.quantity), 0) * 1000).toLocaleString('vi-VN')}₫</p>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>)}
                     </div>
+                </section>
+            </div>
+            <div className='footer w-100' style={{ background: "#FCF3CF" }}>
+                <div className="container">
+                    <p>© 2026 CyberPhone. All rights reserved.</p>
                 </div>
-            </section>
-            </div >
-    <div className='footer w-100' style={{ background: "#FCF3CF" }}>
-        <div className="container">
-            <p>© 2026 CyberPhone. All rights reserved.</p>
-        </div>
 
-    </div>
+            </div>
         </>
 
     )
